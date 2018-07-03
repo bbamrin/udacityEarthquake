@@ -18,20 +18,12 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_earthquake);
 
-        earthquakeList = new ArrayList<>();
-        Earthquake earthquake = new Earthquake();
-        earthquake.setDate("s");
-        earthquake.setPlace("s");
-        earthquake.setMagnitude("322");
-        earthquakeList.add(earthquake);
-        earthquakeList.add(earthquake);
-        earthquakeList.add(earthquake);
-        earthquakeList.add(earthquake);
-        earthquakeList.add(earthquake);
+        earthquakeList = QueryUtils.extractEarthquakes();
         earthQuakeRecyclerAdapter = new EarthQuakeRecyclerAdapter(earthquakeList);
         earthquakeRecycler = (RecyclerView) findViewById(R.id.earthquakeRecycler);
         earthquakeRecycler.setLayoutManager(new LinearLayoutManager(EarthquakeActivity.this));
         earthquakeRecycler.setAdapter(earthQuakeRecyclerAdapter);
+
 
     }
 }
