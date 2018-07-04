@@ -68,26 +68,31 @@ public final class QueryUtils {
             for (int i = 0; i < featuresArray.length(); ++i) {
                 Earthquake earthquake = new Earthquake();
                 JSONObject earthquakeJSON = featuresArray.getJSONObject(i);
+                //setting the date of the earthquake
                 long date = earthquakeJSON.getJSONObject("properties").getLong("time");
                 Date dateObject = new Date(date);
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy\nHH:mm");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
                 String dateToDisplay = dateFormatter.format(dateObject);
+                SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+                String timeToDisplay = timeFormatter.format(dateObject);
                 String place = earthquakeJSON.getJSONObject("properties").getString("place");
                 stringBuilder = new StringBuilder(place);
-
                 earthquake.setDate(dateToDisplay);
+                earthquake.setTime(timeToDisplay);
+                //setting the magnitude for the earthquake
                 //here is a bug, if data is not float an error occurs, it will be fixed later
                 earthquake.setMagnitude(earthquakeJSON.getJSONObject("properties").getString("mag"));
-
+                //setting the place of the earthquake
                 matcher = pattern.matcher(place);
-                if (matcher.matches()){
-                    earthquake.setDirection(" " + stringBuilder.substring(0,stringBuilder.indexOf(" of ")+3));
-                    earthquake.setExactPlace(stringBuilder.substring(stringBuilder.indexOf(" of ")+3,stringBuilder.length()));
-                } else{
+                if (matcher.matches()) {
+                    earthquake.setDirection(" " + stringBuilder.substring(0, stringBuilder.indexOf(" of ") + 3));
+                    earthquake.setExactPlace(stringBuilder.substring(stringBuilder.indexOf(" of ") + 3, stringBuilder.length()));
+                } else {
                     earthquake.setExactPlace(stringBuilder.toString());
                     earthquake.setDirection("Near the");
                 }
-
+                //setting
+                earthquake.setFullUrl(earthquakeJSON.getJSONObject("properties").getString("url"));
                 earthquakes.add(earthquake);
 
             }

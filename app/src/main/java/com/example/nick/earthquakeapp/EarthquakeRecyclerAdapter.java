@@ -6,7 +6,9 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -15,7 +17,11 @@ public class EarthquakeRecyclerAdapter extends RecyclerView.Adapter<EarthquakeVi
 
     ArrayList<Earthquake> earthquakeList;
     Context context;
+    OnItemClickListener onItemClickListener;
 
+    public void setOnItemClickListener(OnItemClickListener OnItemClickListener) {
+        this.onItemClickListener = OnItemClickListener;
+    }
 
     public EarthquakeRecyclerAdapter(ArrayList<Earthquake> earthquakeList, Context context) {
         this.earthquakeList = earthquakeList;
@@ -26,7 +32,9 @@ public class EarthquakeRecyclerAdapter extends RecyclerView.Adapter<EarthquakeVi
     @Override
     public EarthquakeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        EarthquakeViewHolder viewHolder = new EarthquakeViewHolder(inflater.inflate(R.layout.earthquake_item, parent, false));
+        View itemView  = inflater.inflate(R.layout.earthquake_item, parent, false);
+        EarthquakeViewHolder viewHolder = new EarthquakeViewHolder(itemView,onItemClickListener);
+
         return viewHolder;
     }
 
@@ -37,6 +45,8 @@ public class EarthquakeRecyclerAdapter extends RecyclerView.Adapter<EarthquakeVi
         holder.directionTextView.setText(earthquake.getDirection());
         holder.exactPlaceTextView.setText(earthquake.getExactPlace());
         holder.dateTextView.setText(earthquake.getDate());
+        holder.timeTextView.setText(earthquake.getTime());
+
         //setting color of the background circle of the magnitude
         ((GradientDrawable)holder.magnitudeTextView.getBackground()).setColor(getMagnitudeColor(earthquake.getMagnitude(),this.context));
 
