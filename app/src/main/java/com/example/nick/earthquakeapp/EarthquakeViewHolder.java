@@ -6,14 +6,16 @@ import android.widget.TextView;
 
 public class EarthquakeViewHolder extends RecyclerView.ViewHolder {
     TextView dateTextView;
-    TextView placeTextView;
+    TextView directionTextView;
     TextView magnitudeTextView;
+    TextView exactPlaceTextView;
 
 
     public EarthquakeViewHolder(View itemView) {
         super(itemView);
+        exactPlaceTextView = (TextView)itemView.findViewById(R.id.exactPlaceTextId);
         dateTextView = (TextView)itemView.findViewById(R.id.dateTextView);
-        placeTextView = (TextView)itemView.findViewById(R.id.placeTextView);
+        directionTextView = (TextView)itemView.findViewById(R.id.directionTextId);
         magnitudeTextView = (TextView)itemView.findViewById(R.id.magnitudeTextView);
     }
 }

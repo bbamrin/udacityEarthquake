@@ -6,15 +6,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
  */
 public final class QueryUtils {
+    //reg expression to find substring "*km *** of ...."
+    private static String REGEXP_TO_SPLIT_DATA = "^.*([0-9]km ([A-Z]){1,3} (of|OF) ).*$";
 
     /**
      * Sample JSON response for a USGS query
@@ -46,6 +49,10 @@ public final class QueryUtils {
 
         // Create an empty ArrayList that we can start adding earthquakes to
         ArrayList<Earthquake> earthquakes = new ArrayList<>();
+        //stringBuilder for split location data into 2 textViews
+        StringBuilder stringBuilder;
+        Matcher matcher;
+        Pattern pattern = Pattern.compile(REGEXP_TO_SPLIT_DATA);
 
 
         // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
@@ -57,17 +64,30 @@ public final class QueryUtils {
 
             JSONObject earthquakesJSON = new JSONObject(SAMPLE_JSON_RESPONSE);
             JSONArray featuresArray = earthquakesJSON.getJSONArray("features");
-            Log.d("LOG",featuresArray.toString());
-            for(int i = 0; i < featuresArray.length();++i){
+            Log.d("LOG", featuresArray.toString());
+            for (int i = 0; i < featuresArray.length(); ++i) {
                 Earthquake earthquake = new Earthquake();
                 JSONObject earthquakeJSON = featuresArray.getJSONObject(i);
                 long date = earthquakeJSON.getJSONObject("properties").getLong("time");
                 Date dateObject = new Date(date);
                 SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy\nHH:mm");
                 String dateToDisplay = dateFormatter.format(dateObject);
+                String place = earthquakeJSON.getJSONObject("properties").getString("place");
+                stringBuilder = new StringBuilder(place);
+
                 earthquake.setDate(dateToDisplay);
+                //here is a bug, if data is not float an error occurs, it will be fixed later
                 earthquake.setMagnitude(earthquakeJSON.getJSONObject("properties").getString("mag"));
-                earthquake.setPlace(earthquakeJSON.getJSONObject("properties").getString("place"));
+
+                matcher = pattern.matcher(place);
+                if (matcher.matches()){
+                    earthquake.setDirection(" " + stringBuilder.substring(0,stringBuilder.indexOf(" of ")+3));
+                    earthquake.setExactPlace(stringBuilder.substring(stringBuilder.indexOf(" of ")+3,stringBuilder.length()));
+                } else{
+                    earthquake.setExactPlace(stringBuilder.toString());
+                    earthquake.setDirection("Near the");
+                }
+
                 earthquakes.add(earthquake);
 
             }

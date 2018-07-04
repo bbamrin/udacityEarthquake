@@ -1,16 +1,26 @@
 package com.example.nick.earthquakeapp;
 
 public class Earthquake {
-    private String place;
+    private String direction;
+    private String exactPlace;
+
+    public String getExactPlace() {
+        return exactPlace;
+    }
+
+    public void setExactPlace(String exactPlace) {
+        this.exactPlace = exactPlace;
+    }
+
     private String date;
     private String magnitude;
 
-    public String getPlace() {
-        return place;
+    public String getDirection() {
+        return direction;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     public String getDate() {
