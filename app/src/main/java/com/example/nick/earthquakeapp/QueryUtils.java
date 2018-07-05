@@ -136,14 +136,13 @@ public final class QueryUtils {
 
             JSONObject earthquakesJSON = new JSONObject(earthquakeJSONString);
             JSONArray featuresArray = earthquakesJSON.getJSONArray("features");
-            Log.d("LOG", featuresArray.toString());
             for (int i = 0; i < featuresArray.length(); ++i) {
                 Earthquake earthquake = new Earthquake();
                 JSONObject earthquakeJSON = featuresArray.getJSONObject(i);
                 //setting the date of the earthquake
                 long date = earthquakeJSON.getJSONObject("properties").getLong("time");
                 Date dateObject = new Date(date);
-                SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM dd, yyyy");
                 String dateToDisplay = dateFormatter.format(dateObject);
                 SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
                 String timeToDisplay = timeFormatter.format(dateObject);

@@ -23,7 +23,6 @@ public class EarthquakeViewHolder extends RecyclerView.ViewHolder {
         directionTextView = (TextView) itemView.findViewById(R.id.location_offset);
         magnitudeTextView = (TextView) itemView.findViewById(R.id.magnitude);
         if (clickListener != null) {
-            Log.d("LOGT", "sdfg");
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
