@@ -23,6 +23,14 @@ public class EarthquakeRecyclerAdapter extends RecyclerView.Adapter<EarthquakeVi
         this.onItemClickListener = OnItemClickListener;
     }
 
+    public ArrayList<Earthquake> getEarthquakeList() {
+        return earthquakeList;
+    }
+
+    public void setEarthquakeList(ArrayList<Earthquake> earthquakeList) {
+        this.earthquakeList = earthquakeList;
+    }
+
     public EarthquakeRecyclerAdapter(ArrayList<Earthquake> earthquakeList, Context context) {
         this.earthquakeList = earthquakeList;
         this.context = context;
